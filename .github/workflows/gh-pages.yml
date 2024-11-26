@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Ludwig Hülk (Ludee) © Reiner Lemoine Institut
+# SPDX-License-Identifier: CC0-1.0
+
+name: gh-pages (develop branch)
+on:
+  push:
+    branches:
+      - develop
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v2
+        with:
+          key: ${{ github.ref }}
+          path: .cache
+      - run: pip install --upgrade -r requirements.txt
+      - run: mike deploy develop --push
